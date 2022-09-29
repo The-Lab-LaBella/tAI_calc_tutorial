@@ -11,7 +11,8 @@ The tAI.R package requires output from codonM and codonW - I have found, however
 Files required - tRNA_order.txt
 
 This step can be done in R
-`library(tidyverse)
+```
+library(tidyverse)
 library(dplyr)
 
 tRNA_data<-read_delim(tRNA_file, "\t", escape_double = FALSE, trim_ws = TRUE, col_names=TRUE))
@@ -20,4 +21,5 @@ tRNA_new<-str_replace(tRNA_file, ".tRNA.out.tRNA.txt", ".tAI.tRNA.txt")
 pec<-str_replace(tRNA_file, ".tRNA.out.tRNA.txt", "")
 tRNA_data<-left_join(tRNA_order, tRNA_data)
 tRNA_data<-tRNA_data[,4]
-write.table(tRNA_data, file=tRNA_new, sep="", row.names = F, col.names = F)`
+write.table(tRNA_data, file=tRNA_new, sep="", row.names = F, col.names = F)
+```
