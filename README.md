@@ -95,5 +95,26 @@ ws_order<-ws_order[order(ws_order$order.x),]
 ws_order<-ws_order[,c(2,6)]
 colnames(ws_order)<-c("CodonsList","wi")
 write.table(ws_order, file=wi_out, sep="\t", row.names = F, col.names = T, quote = F)
+```
 
+## Step 6 calculate the tAI values 
+
+There is an option in the tAI.R package for computing tAI - I have also written scripts that calculate the tAI values by taking the geometric mean of the ws values for the codons in each transcript
+
+To do this step in R using tAI.R do
+
+```
+
+# this.ws this is our ws values 
+m_file<-"M_FILE"
+
+this.m<-matrix(scan(m_file),ncol=61, byrow=T)
+
+#ignore methionine
+this.m<-this.m[,-33]
+
+this.tai <- get.tai(this.m, this.ws)
+
+write.table(this.tai, file=tai_out, sep="\t", row.names=F, col.names=T, quote=F)
+```
 
