@@ -69,31 +69,38 @@ wi_out<-str_replace(tRNA_file, ".tAI.tRNA.txt", ".tAIR_ws.txt")
 #we need the tRNA order again
 suppressMessages(tRNA_order<-read_delim("tRNA_order.txt", "\t", escape_double = FALSE, trim_ws = TRUE, col_names=TRUE))
 
-
-this.trna <- scan(tRNA_file)
+this.trna <- scan(tRNA_new)
 this.m <- matrix(scan(m_file), ncol=61, byrow=TRUE)
+this.m<-this.m[,-33]
 this.ws <- get.ws(tRNA=this.trna, sking=0)
 
-#Remove these codons
+
+#now we are going to format the ws for other programs and save that data
+
 ws_order<-subset(tRNA_order, AntiCodonsList != "TTA")
 ws_order<-subset(ws_order, AntiCodonsList != "CTA")
 ws_order<-subset(ws_order, AntiCodonsList != "TCA")
 ws_order<-subset(ws_order, AntiCodonsList != "CAT")
 
-#do some more editing - make sure the non-degenerate codons are set to 1
+
 
 left_over<-subset(tRNA_order, AntiCodonsList =="TTA" |  AntiCodonsList == "CTA" |  AntiCodonsList == "TCA"|  AntiCodonsList == "CAT")
 left_over$ws=1
-ws_order$ws<-this.ws
-ws_order<-rbind(ws_order, left_over)
 
+ws_order$ws<-this.ws
+
+
+ws_order<-rbind(ws_order, left_over)
 
 ws_order<-full_join(tRNA_order,ws_order,  by="AntiCodonsList")
 
 
 ws_order<-ws_order[order(ws_order$order.x),]
+
 ws_order<-ws_order[,c(2,6)]
 colnames(ws_order)<-c("CodonsList","wi")
+
+
 write.table(ws_order, file=wi_out, sep="\t", row.names = F, col.names = T, quote = F)
 ```
 
